@@ -70,6 +70,9 @@ def generate_table_data(*html_outputs):
                 if "\n" in key:
                     key = key[:key.index("\n")]
 
+                if key.isdigit():
+                    continue # dummy field
+
                 if key not in keys:
                     keys[key] = len(keys)
                     table_data.append([key] + [None] * len(html_outputs))
