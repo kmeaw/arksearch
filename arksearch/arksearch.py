@@ -21,7 +21,6 @@ Searches Intel's ARK site and returns data about various processors.
 TOTALLY UNOFFICIAL. ;)
 """
 from bs4 import BeautifulSoup
-import HTMLParser
 
 import click
 import requests
@@ -55,15 +54,13 @@ def generate_table_data(*html_outputs):
 
     keys = {}
 
-    hp = HTMLParser.HTMLParser()
-
     for i, html_output in enumerate(html_outputs):
         soup = BeautifulSoup(html_output, 'html.parser')
         for table in soup.select('ul.specs-list'):
             rows = table.find_all("li")
             for row in rows:
                 key = row.find('span', class_='label').get_text("\n", strip=True)
-                value = hp.unescape(row.find('span', class_='value').get_text("\n", strip=True))
+                value = row.find('span', class_='value').get_text("\n", strip=True)
 
                 if key == 'T\nCASE':
                     key = 'T(CASE)'
