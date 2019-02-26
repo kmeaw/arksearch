@@ -28,7 +28,7 @@ import requests
 from terminaltables import AsciiTable
 
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like"
-              "Gecko) Chrome/47.0.2526.111 Safari/537.36")
+              "Gecko) Chrome/72.0.3626.109 Safari/537.36")
 
 
 def get_full_ark_url(quickurl):
@@ -77,6 +77,7 @@ def generate_table_data(*html_outputs):
 
     if len(html_outputs) > 1:
         table_data = filter(lambda row: len(set(row[1:])) > 1, table_data)
+    table_data = list(table_data)
     table_data.insert(0, ['Parameter'] + ['Value'] * len(html_outputs))
 
     return table_data
@@ -85,11 +86,14 @@ def generate_table_data(*html_outputs):
 def quick_search(*search_terms):
     result = []
     for search_term in search_terms:
-        url = "http://ark.intel.com/search/AutoComplete?term={0}"
+        url = "http://ark.intel.com/libs/apps/intel/arksearch/autocomplete?_charset_=UTF-8&input_query={0}"
         headers = {
             'User-Agent': USER_AGENT,
+	    'Content-Type': 'application/json; charset=UTF-8',
+	    'Referer': 'https://ark.intel.com/content/www/us/en/ark/products/91770/intel-xeon-processor-e5-2690-v4-35m-cache-2-60-ghz.html',
+	    'X-Requested-With': 'XMLHttpRequest',
         }
-        r = requests.get(url.format(search_term, headers=headers))
+        r = requests.get(url.format(search_term), headers=headers)
         result.append(r.json())
     return result
 
@@ -112,8 +116,8 @@ def search(ctx, search_terms):
         choice_dict = {}
         counter = 0
         for cpu in ark_json:
-            choice_dict[counter] = cpu['quickUrl']
-            click.echo(u"[{0}] {1}".format(counter, cpu['value']))
+            choice_dict[counter] = cpu['prodUrl']
+            click.echo(u"[{0}] {1}".format(counter, cpu['label']))
             counter += 1
         if counter == 1:
             choice = 0
