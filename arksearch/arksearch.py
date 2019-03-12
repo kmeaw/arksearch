@@ -43,6 +43,7 @@ def get_cpu_html(quickurl):
         'User-Agent': USER_AGENT,
     }
     r = requests.get(full_url, headers=headers)
+    r.encoding = 'UTF-8'
     return r.text
 
 
