@@ -56,7 +56,7 @@ def generate_table_data(*html_outputs):
     keys = {}
 
     for i, html_output in enumerate(html_outputs):
-        soup = BeautifulSoup(html_output, 'html.parser')
+        soup = BeautifulSoup(html_output, 'html5lib')
         for table in soup.select('ul.specs-list'):
             rows = table.find_all("li")
             for row in rows:

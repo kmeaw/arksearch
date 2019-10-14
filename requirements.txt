@@ -2,3 +2,4 @@ click
 beautifulsoup4
 requests
 terminaltables
+html5lib
