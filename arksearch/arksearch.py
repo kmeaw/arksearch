@@ -41,6 +41,8 @@ def get_cpu_html(quickurl):
     full_url = get_full_ark_url(quickurl)
     headers = {
         'User-Agent': USER_AGENT,
+        'Accept-Language': 'en;q=0.9',
+        'Cookie': 'PrefLangIETF=en-UK',
     }
     r = requests.get(full_url, headers=headers)
     r.encoding = 'UTF-8'
@@ -87,12 +89,14 @@ def generate_table_data(*html_outputs):
 def quick_search(*search_terms):
     result = []
     for search_term in search_terms:
-        url = "http://ark.intel.com/libs/apps/intel/arksearch/autocomplete?_charset_=UTF-8&input_query={0}"
+        url = "http://ark.intel.com/libs/apps/intel/arksearch/autocomplete?_charset_=UTF-8&input_query={0}&locale=en_us"
         headers = {
             'User-Agent': USER_AGENT,
 	    'Content-Type': 'application/json; charset=UTF-8',
 	    'Referer': 'https://ark.intel.com/content/www/us/en/ark/products/91770/intel-xeon-processor-e5-2690-v4-35m-cache-2-60-ghz.html',
 	    'X-Requested-With': 'XMLHttpRequest',
+            'Accept-Language': 'en;q=0.9',
+            'Cookie': 'PrefLangIETF=en-UK',
         }
         r = requests.get(url.format(search_term), headers=headers)
         result.append(r.json())
